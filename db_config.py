@@ -7,7 +7,7 @@ def get_db_connection():
         user=os.getenv("root"),
         password=os.getenv("u3Q6m50wS9TcrxI4N8GjGIlTccHH83jI"),
         database=os.getenv("expense_tracker_g6lz"),
-        port=int(os.getenv("5432")),
+        port=int(os.getenv("5432",3306)),
         charset="utf8mb4",
     )
 
