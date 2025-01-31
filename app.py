@@ -2,35 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from werkzeug.security import generate_password_hash, check_password_hash
 from db_config import get_db_connection
 import datetime
-from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.secret_key = 'rajesh@11'  
-
-# Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://<root>:<u3Q6m50wS9TcrxI4N8GjGIlTccHH83jI>@<expense_tracker_g6lz.dpg-cuacr73qf0us73c869g0-a.render.com>/<expense_tracker_g6lz>' 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-
-# Users table
-class Users(db.Model):
-    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
-
-# Expenses table
-class Expenses(db.Model):
-    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
-    name = db.Column(db.String(100), nullable=False)
-    amount = db.Column(db.Float, nullable=False)
-    category = db.Column(db.String(50), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-
-# Run this to create tables
-with app.app_context():
-    db.create_all()
 
 
 @app.route('/')
@@ -104,8 +78,7 @@ def logout():
     flash("Logout successful!", "success")
     return redirect(url_for('login'))
 
-
-# Dashboard
+#Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     # Check if the user is logged in
@@ -172,7 +145,6 @@ def dashboard():
                            month=month, 
                            year=year,
                            username=username)  # Pass username to the template
-
 
 # Add Expense
 @app.route('/add_expense', methods=['GET', 'POST'])

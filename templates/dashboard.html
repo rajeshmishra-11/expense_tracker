@@ -74,10 +74,10 @@
             <tbody>
                 {% for expense in expenses %}
                     <tr>
-                        <td>{{ expense[1] }}</td> <!-- Assuming 'date' is in index 1 -->
-                        <td>{{ expense[2] }}</td> <!-- Assuming 'category' is in index 2 -->
-                        <td>₹{{ expense[3] }}</td> <!-- Assuming 'amount' is in index 3 -->
-                        <td>{{ expense[4] }}</td> <!-- Assuming 'description' is in index 4 -->
+                        <td>{{ expense[2] }}</td> <!-- Assuming 'date' is in index 1 -->
+                        <td>{{ expense[3] }}</td> <!-- Assuming 'category' is in index 2 -->
+                        <td>₹{{ expense[4] }}</td> <!-- Assuming 'amount' is in index 3 -->
+                        <td>{{ expense[5] }}</td> <!-- Assuming 'description' is in index 4 -->
                         <td>
                             <a href="{{ url_for('update_expense', expense_id=expense[0]) }}" class="btn btn-warning btn-sm">Edit</a>
                             <a href="{{ url_for('delete_expense', expense_id=expense[0]) }}" class="btn btn-danger btn-sm">Delete</a>
