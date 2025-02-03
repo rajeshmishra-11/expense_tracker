@@ -21,6 +21,32 @@
         }
     </style>
 </head>
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    <div id="flash-messages" class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1050;">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<script>
+  // Auto-hide flash messages after 3 seconds
+  setTimeout(() => {
+    const flashMessages = document.getElementById('flash-messages');
+    if (flashMessages) {
+      flashMessages.style.transition = "opacity 0.5s ease-out";
+      flashMessages.style.opacity = "0";
+      setTimeout(() => flashMessages.remove(), 500);
+    }
+  }, 3000);
+</script>
+
+
 <body>
     <div class="container">
         <h2 class="text-center">Your Dashboard</h2>
@@ -123,6 +149,9 @@
         <div class="mt-4">
             <a href="{{ url_for('add_expense') }}" class="btn btn-success">Add Expense</a>
             <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+            <a href="{{ url_for('compare_expenses') }}" class="btn btn-primary">Compare Expenses</a>
+
+
         </div>
     </div>
 </body>

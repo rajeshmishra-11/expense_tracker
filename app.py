@@ -225,6 +225,74 @@ def delete_expense(expense_id):
     flash("Expense deleted successfully!", "success")
     return redirect(url_for('dashboard'))
 
+#comapare
+@app.route('/compare_expenses', methods=['GET', 'POST'])
+def compare_expenses():
+    if 'user_id' not in session:
+        flash("Please log in to compare expenses.", "error")
+        return redirect(url_for('login'))
+
+    labels = []
+    data1 = []
+    data2 = []
+    month1 = month2 = None  # Initialize months
+
+    if request.method == 'POST':
+        month1_full = request.form.get('month1')  # Example: "2024-01"
+        month2_full = request.form.get('month2')  # Example: "2024-02"
+
+        if not month1_full or not month2_full:
+            flash("Please select two months.", "error")
+            return redirect(url_for('compare_expenses'))
+
+        # Extract year and month separately
+        year1, month1 = month1_full.split('-')
+        year2, month2 = month2_full.split('-')
+
+        db = get_db_connection()
+        cursor = db.cursor()
+
+        # Fetch category-wise expense sums for first selected month
+        cursor.execute("""
+            SELECT category, SUM(amount) 
+            FROM expenses 
+            WHERE user_id = %s AND MONTH(date) = %s AND YEAR(date) = %s
+            GROUP BY category
+        """, (session['user_id'], month1, year1))
+        expenses1 = cursor.fetchall()
+
+        # Fetch category-wise expense sums for second selected month
+        cursor.execute("""
+            SELECT category, SUM(amount) 
+            FROM expenses 
+            WHERE user_id = %s AND MONTH(date) = %s AND YEAR(date) = %s
+            GROUP BY category
+        """, (session['user_id'], month2, year2))
+        expenses2 = cursor.fetchall()
+
+        db.close()
+
+        # Prepare data for chart
+        category_dict = {}
+
+        for category, amount in expenses1:
+            category_dict[category] = [amount, 0]  # First month amount, second month default 0
+
+        for category, amount in expenses2:
+            if category in category_dict:
+                category_dict[category][1] = amount  # Update second month amount
+            else:
+                category_dict[category] = [0, amount]  # First month default 0, second month amount
+
+        # Extract labels and values
+        labels = list(category_dict.keys())
+        data1 = [values[0] for values in category_dict.values()]
+        data2 = [values[1] for values in category_dict.values()]
+
+    return render_template('compare_expenses.html', labels=labels, data1=data1, data2=data2, month1=month1, month2=month2)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
