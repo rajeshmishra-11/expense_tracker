@@ -30,21 +30,16 @@
 
     <!-- Form to Select Two Months -->
     <div class="card shadow p-4">
-        <form method="POST" class="row g-3">
-            <div class="col-md-4">
-                <label for="month1" class="form-label">First Month:</label>
-                <input type="month" class="form-control" name="month1" required>
-            </div>
-
-            <div class="col-md-4">
-                <label for="month2" class="form-label">Second Month:</label>
-                <input type="month" class="form-control" name="month2" required>
-            </div>
-
-            <div class="col-md-4 text-center mt-4">
-                <button type="submit" class="btn btn-primary btn-lg w-100">Compare</button>
-            </div>
+        <form method="POST">
+            <label>Select First Month:</label>
+            <input type="month" name="month1" required>
+        
+            <label>Select Second Month:</label>
+            <input type="month" name="month2" required>
+        
+            <button type="submit">Compare</button>
         </form>
+        
     </div>
 
 
