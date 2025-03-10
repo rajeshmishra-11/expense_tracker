@@ -138,7 +138,7 @@ def dashboard():
 
     # Render the template, passing the username and other data
     return render_template('dashboard.html', 
-                           expenses=expenses, 
+                           expenses=expenses,  
                            categories=categories, 
                            amounts=amounts, 
                            total_expense=total_expense, 
@@ -295,7 +295,7 @@ def compare_expenses():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=4000,debug=True)
 
 
 
